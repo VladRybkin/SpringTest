@@ -8,8 +8,9 @@
     <body>
         <h2>Hello World!</h2>
         <br/>
-        <a href="/users">users</a>
 
+        <label><a href="/users"><button onclick="">userspage</button></a></label><br>
+        <label><a href="/loginPage/"><button onclick="">Login Page</button></a></label><br>
 
     </body>
 </html>

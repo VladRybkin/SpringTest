@@ -1,66 +1,54 @@
 package ua.training.controller;
 
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 import ua.training.model.User;
+import ua.training.service.UserService;
 
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.logging.Logger;
+
 
 @Controller
+@SessionAttributes("name")
 @RequestMapping("/users")
+
 public class UserController {
 
+    @Autowired
+    UserService userService;
+    Logger log = Logger.getLogger(UserController.class.getName());
 
-    List<User> users = new ArrayList<>();
 
-//    @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    public ResponseEntity<List<User>> findAll() {
-//        users.add(new User(1, "oleg"));
-//        if (users.isEmpty()) {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//        return new ResponseEntity<List<User>>(users, HttpStatus.OK);
-//    }
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    public ModelAndView findAll(Model model) {
-        ModelAndView modelAndView=new ModelAndView();
-        modelAndView.addObject("aop", "modeland view");
-      model.addAttribute("getList", "ojbect");
-        return modelAndView;
-    }
+    @GetMapping
+    public String findAll(Model model, HttpSession session, HttpServletRequest request) {
+        ModelAndView modelAndView=new ModelAndView("users");
 
-    @RequestMapping( method = RequestMethod.POST)
-    public ModelAndView addUser(@RequestParam(value="param", required=false) String param2 ){
-        ModelAndView modelAndView=new ModelAndView();
-        modelAndView.addObject("param1", param2);
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "addUser", method = RequestMethod.POST)
-    public String submit(@ModelAttribute("user")User user) {
-
+        model.addAttribute("name", "hellosession");
+        model.addAttribute("userlast", userService.getUsers());
         return "users";
     }
 
 
+   @PostMapping
+    public RedirectView submit(@ModelAttribute("user") User user) {
 
+        if (user != null) {
+            user.setRole(User.Role.ADMIN);
+            userService.addUser(user);
+            log.info("submit method runned");
 
-//    @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    public ResponseEntity<User> addUser(@RequestBody @Validated User user) {
-//        HttpHeaders headers = new HttpHeaders();
-//        users.add(user);
-//        return new ResponseEntity<>(user, headers, HttpStatus.CREATED);
-//    }
-//
-//    @RequestMapping(value = "{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    public ResponseEntity<User> deleteUser(@PathVariable("id") Long id) {
-//        users.remove(id);
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
+        }
+        return new RedirectView("users");
+    }
 
 
 }

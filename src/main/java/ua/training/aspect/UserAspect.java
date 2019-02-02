@@ -1,5 +1,6 @@
 package ua.training.aspect;
 
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -25,8 +26,9 @@ public class UserAspect {
     }
 
     @After("beforeprint()")
-    public void printAdvice() {
-        System.out.println("advice method called " + count);
+    public void printAdvice(JoinPoint joinPoint) {
+
+        System.out.println("advice method called " + count+ " "+joinPoint.getClass());
 
     }
 

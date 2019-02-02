@@ -16,16 +16,19 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-3.2.xsd">
     <aop:aspectj-autoproxy/>
+    <context:component-scan base-package="ua.training"/>
 
 
-    <bean class="ua.training.model.User" id="user" init-method="initPr">
+    <bean class="ua.training.model.User" name="user1" init-method="initPr" scope="session">
         <property name="id" value="3"/>
         <property name="name" value="VladTv"/>
     </bean>
+    <aop:scoped-proxy/>
+
 
     <bean name="loggingAspect" class="ua.training.aspect.UserAspect"/>
 
-    <context:component-scan base-package="ua.training"/>
+
 
 
 

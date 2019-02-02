@@ -1,17 +1,18 @@
 package ua.training;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Configuration;
+
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import ua.training.model.User;
+import ua.training.service.UserService;
 
 
-
-@Configuration
 public class Main {
+
     public static void main(String[] args) {
-        ApplicationContext applicationContext=new ClassPathXmlApplicationContext("spring.xml");
-        User user=applicationContext.getBean("user", User.class);
+        ApplicationContext applicationContext=new ClassPathXmlApplicationContext("spring.xml", "db.xml");
+        User user=applicationContext.getBean("user1", User.class);
         user.getId();
         user.getName();
         user.getName();
@@ -20,8 +21,15 @@ public class Main {
         user.print();
         System.out.println(user);
 
+
+
+
     }
 
 
 
-}
+    }
+
+
+
+
